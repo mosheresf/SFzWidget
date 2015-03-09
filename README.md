@@ -27,5 +27,5 @@ $('#iffWidget').iffWidget({ required: ['Facebook', 'WhatsApp'] }) -- Show Facebo
 $('#iffWidget').iffWidget({ required: ['SMS'] }) -- Show SMS only
 
 Edit iffWidget.js to point to your 
-facebook message page: https://www.facebook.com/messages/<companyPage>
-SFZ system: http://<yourCompany>/servicefriendz.com/iff/ivr/
+facebook message page: https://www.facebook.com/messages/<'companyPage'>
+SFZ system: http://<'yourCompany'>/servicefriendz.com/iff/ivr/
