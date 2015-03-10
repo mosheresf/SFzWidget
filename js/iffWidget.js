@@ -6,8 +6,8 @@
 		 * Current options set by the caller including defaults.
 		 * @public
 		 */
-		this.options = $.extend({}, Iff.Defaults, options);
-		
+		this.options = $.extend(true, {}, Iff.Defaults, options);
+				
 		/**
 		 * Plugin element.
 		 * @public
@@ -28,28 +28,31 @@
 			},
 			backgroundColor: 'transparent',
 			img: $('<img src="../images/all.png"></img>'),
-			items: [{
-				name: 'Facebook',
-				backgroundColor: 'transparent',
-				url: 'https://www.facebook.com/messages/whateverphones',
-				img: $('<img src="../images/facebook.png"></img>'),
-				description: 'Facebook',
-			}, {
-				name: 'WhatsApp',
-				backgroundColor: 'transparent',
-				img: $('<img src="../images/whatsapp.png"></img>'),
-				description: '<form id="whatsappForm" class="iw-form" role="form" action="javascript: sendToWhatsApp();">' +
-							  '	<h3>Immediate service via whatsapp<h3>' +
-							  '	<input type="text" class="iw-form-control" id="phoneNumber" placeholder="Your number" required autofocus>' +
-							  '	<h3>Country - area code - phone number</h3>' +
-							  ' <div class="pull-right"><button class="iw-btn" type="submit">Send</button></div>' +
-							  '</form>'	
-			}, {
-				name: 'SMS',
-				backgroundColor: 'transparent',
-				img: $('<img src="../images/SMS.png"></img>'),
-				description: 'SMS'
-			}]
+			items: { 
+				'Facebook' : {
+					backgroundColor: 'transparent',
+					url: 'https://www.facebook.com/messages/whateverphones',
+					img: $('<img src="../images/facebook.png"></img>'),
+					description: 'Facebook'
+				}, 
+				'WhatsApp' : {
+					backgroundColor: 'transparent',
+					needCallBack: true,
+					url: 'http://whateverphones.sytes.net/iff/ivr/',
+					img: $('<img src="../images/whatsapp.png"></img>'),
+					description: '<form id="whatsappForm" class="iw-form" role="form" action="javascript: sendToWhatsApp(%%url%%);">' +
+								  '	<h3>Immediate service via whatsapp<h3>' +
+								  '	<input type="text" class="iw-form-control" id="phoneNumber" placeholder="Your number" required autofocus>' +
+								  '	<h3>Country - area code - phone number</h3>' +
+								  ' <div class="pull-right"><button class="iw-btn" type="submit">Send</button></div>' +
+								  '</form>'
+				}, 
+				'SMS' : {
+					backgroundColor: 'transparent',
+					img: $('<img src="../images/SMS.png"></img>'),
+					description: 'SMS'
+				}
+			}
 		};
 		
 	
@@ -122,9 +125,9 @@
 		
 		var descCount = 0;
 		var descriptions = [];
-		for (var i = 0; i < this.options.items.length; i ++) {
+		for (var key in this.options.items) {
 			if (this.options.required.indexOf('ALL') === -1 
-					&& this.options.required.indexOf(this.options.items[i].name) === -1) {
+					&& this.options.required.indexOf(key) === -1) {
 				continue;
 			}
 			
@@ -132,8 +135,8 @@
 			var link = $(document.createElement('a')).addClass('animate')
 				.css('color', this.options.fontColor);
 
-			if (this.options.items[i].backgroundColor) {
-				link.css('background-color', this.options.items[i].backgroundColor);
+			if (this.options.items[key].backgroundColor) {
+				link.css('background-color', this.options.items[key].backgroundColor);
 			} else {
 				link.css('background-color', this.options.backgroundColor);
 			}
@@ -145,27 +148,31 @@
 			}
 			
 			link.attr({
-				href: this.options.items[i].url ? this.options.items[i].url : '#'
+				href: this.options.items[key].url && this.options.items[key].needCallBack !== true ? this.options.items[key].url : '#'
 			});
 			
-			if (this.options.items[i].description) {
-				descriptions[descCount] = $(document.createElement('span')).addClass('desc animate').append(this.options.items[i].description);
+			if (this.options.items[key].description) {
+				var description = this.options.items[key].description;
+				if (this.options.items[key].needCallBack) {
+					description = description.replace('%%url%%', "'" + this.options.items[key].url + "'");
+				}
+				descriptions[descCount] = $(document.createElement('span')).addClass('desc animate').append(description);
 				link.append(descriptions[descCount]);
 				descCount ++;
 			}
 			
-			if (this.options.items[i].icon) {
-				var icon = $(document.createElement('span')).addClass(this.options.items[i].icon);
+			if (this.options.items[key].icon) {
+				var icon = $(document.createElement('span')).addClass(this.options.items[key].icon);
 				link.append(icon);
 			}
 			
-			if (this.options.items[i].img) {
-				var img = $(this.options.items[i].img).addClass('iw-navbar-img-responsive');
+			if (this.options.items[key].img) {
+				var img = $(this.options.items[key].img).addClass('iw-navbar-img-responsive');
 				link.append(img);
 			}
 			
-			if (this.options.items[i].html) {
-				var html = $(this.options.items[i].html);
+			if (this.options.items[key].html) {
+				var html = $(this.options.items[key].html);
 				link.append(html);
 			}
 			
@@ -212,15 +219,16 @@
 
 })(window.jQuery, window, document);
 
-function sendToWhatsApp() {
+function sendToWhatsApp(url) {
 	var input = $('#whatsappForm').find('input#phoneNumber');
 	var phone = input.val();
-	var url = 'http://whateverphones.sytes.net/iff/ivr/';
 	
 	input.val('');
 	
 	$.ajax({
 		  url: url + phone,
+	}).fail(function(jqXHR, textStatus) {
+	    alert( "Request failed: " + jqXHR.statusText );
 	})
 };
 
@@ -231,7 +239,25 @@ function getHostIp(callback) {
 		url: url,
 	}).done(function(data) {
 		if (callback) {
-			callback(data);
+			var hostipInfo = data.split("\n");
+			var found = false;
+			
+		    for (var i = 0; i < hostipInfo.length; i ++) {
+		        ipAddress = hostipInfo[i].split(":");
+		        if ( ipAddress[0] == "IP" ) {
+		        	callback(ipAddress[1]);
+		        	found = true;
+		        	break;
+		        };
+		    }
+		    
+		    if (!found) {
+		    	callback();
+		    }
+		}
+	}).fail(function(jqXHR, textStatus) {
+		if (callback) {
+			callback();
 		}
 	});
 };
