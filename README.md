@@ -52,7 +52,7 @@ getHostIp( callback )  By calling the getHostIp function and pass a callback fun
 Add the following javascript
 	$(document).ready(function () {
 					
-					getHostIp(function(ip) {
+		getHostIp(function(ip) {
 		if (ip) {
 		$('#iffWidget').iffWidget({...});
 		} else {
