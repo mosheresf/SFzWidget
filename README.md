@@ -37,6 +37,7 @@ Show all options
 		$('#iffWidget').iffWidget()
 
 Show Facebook and WhatsApp only, with updated the URL for Facebook.
+		
 		$('#iffWidget').iffWidget({ 
 		required: ['Facebook', 'WhatsApp'], 
 		items: {'Facebook' : {url: 'https://www.facebook.com/messages/whateverphones'}}
