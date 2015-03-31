@@ -49,6 +49,7 @@ url: 'http://whateverphones.sytes.net/iff/ivr/sfz/',
 img: $('<img src="../images/w-whatsapp.png"></img>'),
 description: 'WhatsApp'
 },
+```
 ```javascript
 'CustomItem' : {
 url: 'https://www.something.com',
