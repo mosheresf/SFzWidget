@@ -95,8 +95,21 @@
 				}).fail(function(jqXHR, textStatus) {
 				    alert( "Request failed: " + jqXHR.statusText );
 				})
+
+				if (mobileCheck() === true) {
+					var iwComponent = iwFormHolder.parent();
+					iwComponent.find('.iw-cn-wrapper').removeClass('iw-opened-nav');	
+				}
+				iwFormHolder.find('.iw-form-greeting').css({'display': 'block'});
+				iwFormHolder.find('.iw-form-details').css({'display': 'none'});
 				
-				hideInputForm(el);
+				window.setTimeout(function () {
+					iwFormHolder.find('.iw-form-greeting').css({'display': 'none'});
+					iwFormHolder.find('.iw-form-details').css({'display': 'block'});
+
+					var iwComponent = iwFormHolder.parent();
+					iwComponent.find('.iw-cn-button').trigger('click');					
+				}, 5000);
 				return true;
 			});
 			
@@ -109,7 +122,7 @@
 				} else {
 					bottom = innerHeight / 1.75 + 'px';
 				}
-				left = '40%';					
+				left = (innerWidth / 2) - 62 + 'px';					
 			} else {
 				if (typeof index === 'string') {
 					index = parseInt(index);
@@ -123,8 +136,6 @@
 				bottom = Math.cos(baseDegrees)*225.0778+ 56+'px';
 				left = Math.sin(baseDegrees)*225.0778 + 56+'px';
 			}
-			
-			console.log("***** " + bottom + " " + left);
 			
 			iwFormHolder.css({
 					'bottom': bottom,
@@ -262,7 +273,9 @@
 			.append($('<img src="../images/Aicon-send.png"></img>'));
 		var iwFormInline = $(document.createElement('div')).addClass('iw-form-inline')
 			.append(countryCode).append(phoneNumber).append(submitBtn);
-		var iwFormGroup = $(document.createElement('div')).addClass('iw-form-group')
+		var iwFormGreeting = $(document.createElement('div')).addClass('iw-form-greeting')
+			.text('Thank you. you will receive a message in a sec :)');
+		var iwFormDetails = $(document.createElement('div')).addClass('iw-form-details')
 			.append($(document.createElement('label')).text('phone number:').attr({
 				'for' : 'phoneNumber'
 			}))
@@ -271,6 +284,8 @@
 					.attr({
 						'href': 'http://www.servicefriendz.com'
 					}));
+		var iwFormGroup = $(document.createElement('div')).addClass('iw-form-group')
+			.append(iwFormGreeting).append(iwFormDetails);
 		var iwForm = $(document.createElement('form')).addClass('iw-form')
 			.attr({
 				'action': 'javascript:void(0);',

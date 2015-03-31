@@ -249,7 +249,7 @@
 }
 
 .iw-form-holder .iw-form {
-	padding: 5px;
+	padding: 7px;
 	border-radius: 4px;
 	background-color: rgba(255, 255, 255, 0.6);
 }
@@ -267,8 +267,25 @@
 	border-top: 10px solid rgba(255, 255, 255, 0.6);
 }
 
+.iw-form-holder .iw-form-greeting {
+	position: relative;
+	display: none;
+	top: 25px;
+	color: #555;
+	text-align: center;
+	font-size: 14px;
+	vertical-align: middle;
+}
+
+.iw-form-holder .iw-form-greeting>img {
+	max-width: 100%;
+	height: auto;
+	width: 205px;
+	height: 40px;
+}
+
 .iw-form-holder .iw-form-group {
-	padding: 10px;
+	padding: 20px;
 	border-radius: 4px;
 	background-color: rgba(255, 255, 255, 1);
 	height: 70px;
@@ -277,7 +294,7 @@
 .iw-form-holder .iw-form-group label {
 	position: relative;
 	color: #555;
-	font-size: 12px;
+	font-size: 14px;
 	padding-left: 3px;
 	bottom: 5px;
 }
@@ -289,9 +306,9 @@
 	position: relative;
 	text-decoration: none;
 	color: #3479bc;
-	top: 5px;
+	top: 15px;
 	padding-left: 3px;
-	font-size: 12px;
+	font-size: 14px;
 }
 
 .iw-form-control {
