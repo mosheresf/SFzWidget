@@ -4,13 +4,16 @@ Widget to integrate into sites using servicefriendz
 See below instructions for Widget
 How to setup
 Dependency:
-jQuery
-IntlTelInput
+  jQuery
+  IntlTelInput
+
 Getting Started:
 Link the stylesheet
-<link rel="stylesheet" href="path/to/intlTelInput.css">
-<link rel="stylesheet" href="path/to/widget2.css">
+  <link rel="stylesheet" href="path/to/intlTelInput.css">
+  <link rel="stylesheet" href="path/to/widget2.css">
+
 Add the plugin script  and initialize it on your element
+
 <div id="sfzWidget"></div>
 <script src="path/to/jquery.min.js"></script>
 <script src="path/to/intlTelInput.min.js"></script>
@@ -20,12 +23,14 @@ Add the plugin script  and initialize it on your element
 </script>
 
 Options:
-custom, type object default: bottom is 0px, left is 0px
+  custom, type object default: bottom is 0px, left is 0px
 Example:
+
 custom : {
 bottom: '20px',
 left: '30px'
 }
+
 required, type: array, default: ['ALL'], valid values: 'WhatsApp', 'LiveChat', 'SMS', 'Facebook', 'Mail' and custom value in the items object.
 items, type object, default: basic setup for  'WhatsApp', 'LiveChat', 'SMS', 'Facebook', 'Mail'
 Example:
@@ -46,6 +51,7 @@ description: 'Custom Item'
 
 Country support:
 Example: 
+
 getHostIp(function(data) {
 if (data.ip) {
 $('#sfzWidget').iffWidget({
