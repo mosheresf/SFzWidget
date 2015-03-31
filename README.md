@@ -3,66 +3,60 @@ Widget to integrate into sites using servicefriendz
 
 See below instructions for Widget
 How to setup
-Including files
-<link rel="stylesheet" src="../css/widget.css">
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> 
-<script src="../js/iffWidget.js"></script>
-Usage
+Dependency:
+jQuery
+IntlTelInput
+Getting Started:
+Link the stylesheet
+<link rel="stylesheet" href="path/to/intlTelInput.css">
+<link rel="stylesheet" href="path/to/widget2.css">
+Add the plugin script  and initialize it on your element
+<div id="sfzWidget"></div>
+<script src="path/to/jquery.min.js"></script>
+<script src="path/to/intlTelInput.min.js"></script>
+<script src="path/to/iffwidget2.js"></script>
+<script>
+  $("#sfzWidget").iffWidget();
+</script>
 
-1. IVR and FB as parameters
-Usage
-Create <div id="iffWidget"></div>
-Add the following javascript
-		$(document).ready(function () {
-				
-				$('.iw-navbar-toggler').on('click', function(event) {
-					event.preventDefault();
-					$(this).closest('.iw-navbar-minimal').toggleClass('open');
-				});
-				
-				$('#iffWidget').iffWidget({
-					required: ['Facebook', 'WhatsApp'],
-				items: {
-				'Facebook' : {
-				url: 'https://www.facebook.com/messages/whateverphones'
-				},
-				'WhatsApp' : {
-				url: 'http://whateverphones.sytes.net/iff/ivr/'
-				}
-				}
-				});
-			});
-Example
-Show all options
-		$('#iffWidget').iffWidget()
+Options:
+custom, type object default: bottom is 0px, left is 0px
+Example:
+custom : {
+bottom: '20px',
+left: '30px'
+}
+required, type: array, default: ['ALL'], valid values: 'WhatsApp', 'LiveChat', 'SMS', 'Facebook', 'Mail' and custom value in the items object.
+items, type object, default: basic setup for  'WhatsApp', 'LiveChat', 'SMS', 'Facebook', 'Mail'
+Example:
+items: {
+'WhatsApp' : {
+needInputForm: true,
+url: 'http://whateverphones.sytes.net/iff/ivr/sfz/',
+img: $('<img src="../images/w-whatsapp.png"></img>'),
+description: 'WhatsApp'
+},
 
-Show Facebook and WhatsApp only, with updated the URL for Facebook.
-		
-		$('#iffWidget').iffWidget({ 
-		required: ['Facebook', 'WhatsApp'], 
-		items: {'Facebook' : {url: 'https://www.facebook.com/messages/whateverphones'}}
-		
-		 }) 
-	Show SMS only
-		$('#iffWidget').iffWidget({ required: ['SMS'] })
+'CustomItem' : {
+url: 'https://www.something.com',
+img: $('<img src="../images/something.png"></img>'),
+description: 'Custom Item'
+}
+}
 
-
-2. Country based IM
-Usage
-getHostIp( callback )  By calling the getHostIp function and pass a callback function as a parameter, the callback function will accept an input parameter (IP).
-Add the following javascript
-	$(document).ready(function () {
-					
-		getHostIp(function(ip) {
-		if (ip) {
-		$('#iffWidget').iffWidget({...});
-		} else {
-		$('#iffWidget').iffWidget({...});
-		} 
-		});		
-		});
-
-Example
-		$('#iffWidget').iffWidget() -- Show all options
-		$('#iffWidget').iffWidget({ required: ['Facebook', 'WhatsApp'] }) -- Show Facebook and WhatsApp only.
-		$('#iffWidget').iffWidget({ required: ['SMS'] }) -- Show SMS only
+Country support:
+Example: 
+getHostIp(function(data) {
+if (data.ip) {
+$('#sfzWidget').iffWidget({
+custom: {
+bottom: '0px'
+},
+required: ['WhatsApp', 'LiveChat', 'SMS', 'Facebook']
+});
+} else {
+$('#sfzWidget').iffWidget({
+required: ['WhatsApp', 'SMS']
+});
+}
+});
