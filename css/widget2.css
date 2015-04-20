@@ -311,6 +311,22 @@
 	font-size: 14px;
 }
 
+.iw-form-close {
+	position: absolute;
+	cursor:pointer;
+	right: 10px;
+	top: 10px;
+	font-size: 18px;
+	padding: 0 4px;
+	border-radius: 3px;
+	color: #555;
+}
+
+.iw-form-close:hover {
+	background: rgba(0,0,0,.1);
+	
+}
+
 .iw-form-control {
 	display: block;
 	width: 100%;
